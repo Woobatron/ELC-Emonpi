@@ -19,14 +19,14 @@
 
 /*Recommended node ID allocation
 ------------------------------------------------------------------------------------------------------------
--ID-	-Node Type-
-0	- Special allocation in JeeLib RFM12 driver - reserved for OOK use
+-ID-  -Node Type-
+0 - Special allocation in JeeLib RFM12 driver - reserved for OOK use
 1-4     - Control nodes
-5-10	- Energy monitoring nodes
-11-14	--Un-assigned --
-15-16	- Base Station & logging nodes
-17-30	- Environmental sensing nodes (temperature humidity etc.)
-31	- Special allocation in JeeLib RFM12 driver - Node31 can communicate with nodes on any network group
+5-10  - Energy monitoring nodes
+11-14 --Un-assigned --
+15-16 - Base Station & logging nodes
+17-30 - Environmental sensing nodes (temperature humidity etc.)
+31  - Special allocation in JeeLib RFM12 driver - Node31 can communicate with nodes on any network group
 -------------------------------------------------------b------------------------------------------------------
 
 
@@ -100,8 +100,8 @@ const int timeout=                2000;                               // emonLib
 const int ACAC_DETECTION_LEVEL=   3000;
 
 const byte TEMPERATURE_PRECISION=  12;                                 // 9 (93.8ms),10 (187.5ms) ,11 (375ms) or 12 (750ms) bits equal to resplution of 0.5C, 0.25C, 0.125C and 0.0625C
-const byte MaxOnewire=             6;                                  // maximum number of DS18B20 one wire sensors
-boolean RF_STATUS=                 1;                                  // Turn RF on and off
+const byte MaxOnewire=             2;                                  // maximum number of DS18B20 one wire sensors
+boolean RF_STATUS=                 0;                                  // Turn RF on and off
 //-------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -116,6 +116,10 @@ const byte emonpi_GPIO_pin=            9;              // Connected to Pi GPIO 1
 //const byte emonPi_int1_pin=            3;              // RJ45 pin 6 - INT1 - PWM - Dig 3 - default pulse count input
 //const byte emonPi_int0=                2;            // Default RFM INT (Dig2) - Can be jumpered used JP5 to RJ45 pin 7 - PWM - D2
 #define ONE_WIRE_BUS                   3               // DS18B20 Data, RJ45 pin 4
+#define CT1_pin                        A3              // define CT analog pin for ELC board
+#define CT2_pin                        A2              // define CT analog pin for ELC board
+#define CT3_pin                        A1              // define CT analog pin for ELC board
+#define CT4_pin                        A7              // define CT analog pin for ELC board
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 //Setup DS128B20
@@ -150,9 +154,9 @@ byte CT_count, Vrms;
 unsigned long last_sample=0;                                     // Record millis time of last discrete sample
 byte flag;                                                       // flag to record shutdown push button press
 //volatile byte pulseCount = 0;
-//unsigned long now =0;
+unsigned long now =0;
 //unsigned long pulsetime=0;                                      // Record time of interrupt pulse
-//unsigned long last_rf_rest=0;                                  // Record time of last RF reset
+unsigned long last_rf_rest=0;                                  // Record time of last RF reset
 
 // RF Global Variables
 static byte stack[RF12_MAXDATA+4], top, sendLen, dest;           // RF variables
@@ -207,13 +211,13 @@ void setup()
   CT_Detect();
   serial_print_startup(current_lcd_i2c_addr);
 
-  attachInterrupt(emonPi_int1, onPulse, FALLING);  // Attach pulse counting interrupt on RJ45 (Dig 3 / INT 1)
+  //attachInterrupt(emonPi_int1, onPulse, FALLING);  // Attach pulse counting interrupt on RJ45 (Dig 3 / INT 1)
   emonPi.pulseCount = 0;                                                  // Reset Pulse Count
 
 
 
-  ct1.current(1, Ical1);                                     // CT ADC channel 1, calibration.  calibration (2000 turns / 22 Ohm burden resistor = 90.909)
-  ct2.current(2, Ical2);                                     // CT ADC channel 2, calibration.
+  ct1.current(CT1_pin, Ical1);                                     // CT ADC channel 1, calibration.  calibration (2000 turns / 22 Ohm burden resistor = 90.909)
+  ct2.current(CT2_pin, Ical2);                                     // CT ADC channel 2, calibration.
 
   if (ACAC)                                                           //If AC wavefrom has been detected
   {
@@ -313,7 +317,7 @@ void loop()
       sensors.requestTemperatures();                                        // Send the command to get temperatures
       for(byte j=0;j<numSensors;j++) emonPi.temp[j]=get_temperature(j);
     }
-
+    /*
     if (pulseCount)                                                       // if the ISR has counted some pulses, update the total count
     {
       cli();                                                              // Disable interrupt just in case pulse comes in while we are updating the count
@@ -321,6 +325,7 @@ void loop()
       pulseCount = 0;
       sei();                                                              // Re-enable interrupts
     }
+    */
     /*
     Serial.print(CT1); Serial.print(" "); Serial.print(CT2); Serial.print(" "); Serial.print(ACAC); Serial.print(" "); Serial.println  (CT_count);
     Serial.print(emonPi.power1); Serial.print(" ");
@@ -348,3 +353,4 @@ void double_LED_flash()
   digitalWrite(LEDpin, HIGH);  delay(25); digitalWrite(LEDpin, LOW);
   digitalWrite(LEDpin, HIGH);  delay(25); digitalWrite(LEDpin, LOW);
 }
+
