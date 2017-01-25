@@ -86,11 +86,11 @@ const int RF_RESET_PERIOD=        60000;                            // Time (ms)
 
 //http://openenergymonitor.org/emon/buildingblocks/calibration
 
-const float Ical1=                90.9;                             // (2000 turns / 22 Ohm burden) = 90.9
-const float Ical2=                90.9;
+const float Ical1=                89.5;                             // (2000 turns / 22 Ohm burden) = 90.9
+const float Ical2=                89.5;
 float Vcal_EU=                    256.8;                             // (230V x 13) / (9V x 1.2) = 276.9 - Calibration for EU AC-AC adapter 77DE-06-09
-const float Vcal_USA=             130.0;                             // Calibration for US AC-AC adapter 77DA-10-09
-boolean USA=                      FALSE;
+const float Vcal_USA=             75.95;                             // Calibration for US AC-AC adapter 77DA-10-09
+boolean USA=                      TRUE;
 const byte min_pulsewidth= 110;                              // minimum width of interrupt pulse (default pulse output meters = 100ms)
 
 const float phase_shift=          1.7;
@@ -107,15 +107,15 @@ boolean RF_STATUS=                 1;                                  // Turn R
 
 
 //----------------------------emonPi V3 hard-wired connections---------------------------------------------------------------------------------------------------------------
-const byte LEDpin=                     9;              // emonPi LED - on when HIGH
+const byte LEDpin=                     13;              // emonPi LED - on when HIGH
 const byte shutdown_switch_pin =       8;              // Push-to-make - Low when pressed
-const byte emonpi_GPIO_pin=            5;              // Connected to Pi GPIO 17, used to activate Pi Shutdown when HIGH
+const byte emonpi_GPIO_pin=            9;              // Connected to Pi GPIO 17, used to activate Pi Shutdown when HIGH
 //const byte emonpi_OKK_Tx=              6;            // On-off keying transmission Pin - not populated by default
 //const byte emonPi_RJ45_8_IO=           A6;           // RJ45 pin 8 - Analog 6 (D19) - Aux I/O
-const byte emonPi_int1=                1;              // RJ45 pin 6 - INT1 - PWM - Dig 3 - default pulse count input
-const byte emonPi_int1_pin=            3;              // RJ45 pin 6 - INT1 - PWM - Dig 3 - default pulse count input
+//const byte emonPi_int1=                1;              // RJ45 pin 6 - INT1 - PWM - Dig 3 - default pulse count input
+//const byte emonPi_int1_pin=            3;              // RJ45 pin 6 - INT1 - PWM - Dig 3 - default pulse count input
 //const byte emonPi_int0=                2;            // Default RFM INT (Dig2) - Can be jumpered used JP5 to RJ45 pin 7 - PWM - D2
-#define ONE_WIRE_BUS                   4               // DS18B20 Data, RJ45 pin 4
+#define ONE_WIRE_BUS                   3               // DS18B20 Data, RJ45 pin 4
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
 //Setup DS128B20
@@ -149,10 +149,10 @@ boolean CT1, CT2, ACAC, DS18B20_STATUS;
 byte CT_count, Vrms;
 unsigned long last_sample=0;                                     // Record millis time of last discrete sample
 byte flag;                                                       // flag to record shutdown push button press
-volatile byte pulseCount = 0;
-unsigned long now =0;
-unsigned long pulsetime=0;                                      // Record time of interrupt pulse
-unsigned long last_rf_rest=0;                                  // Record time of last RF reset
+//volatile byte pulseCount = 0;
+//unsigned long now =0;
+//unsigned long pulsetime=0;                                      // Record time of interrupt pulse
+//unsigned long last_rf_rest=0;                                  // Record time of last RF reset
 
 // RF Global Variables
 static byte stack[RF12_MAXDATA+4], top, sendLen, dest;           // RF variables
