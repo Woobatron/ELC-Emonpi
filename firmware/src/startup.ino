@@ -22,7 +22,7 @@ void emonPi_startup()
   pinMode(emonpi_GPIO_pin, OUTPUT);                     //Connected to RasPi GPIO pin 17
   digitalWrite(emonpi_GPIO_pin, LOW);
 
-  pinMode(emonPi_int1_pin, INPUT_PULLUP);               // Set RJ45 interrupt pulse counting pin to input (INT 1) and pullup
+  //pinMode(emonPi_int1_pin, INPUT_PULLUP);               // Set RJ45 interrupt pulse counting pin to input (INT 1) and pullup
 
   Serial.begin(BAUD_RATE);
   Serial.print(F("emonPi V")); Serial.println(firmware_version*0.01);
@@ -34,8 +34,8 @@ void emonPi_startup()
 
 void CT_Detect(){
 //--------------------------------------------------Check for connected CT sensors---------------------------------------------------------------------------------------------------------
-if (analogRead(1) > 0) {CT1 = 1; CT_count++;} else CT1=0;              // check to see if CT is connected to CT1 input, if so enable that channel
-if (analogRead(2) > 0) {CT2 = 1; CT_count++;} else CT2=0;              // check to see if CT is connected to CT2 input, if so enable that channel
+if (analogRead(CT1_pin) > 0) {CT1 = 1; CT_count++;} else CT1=0;              // check to see if CT is connected to CT1 input, if so enable that channel
+if (analogRead(CT1_pin) > 0) {CT2 = 1; CT_count++;} else CT2=0;              // check to see if CT is connected to CT2 input, if so enable that channel
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //--------------------------------------------------Check for connected AC Adapter Sensor------------------------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ pinMode(A0,INPUT);
 delay(500);             //allow things to settle
 
 // Calculate if there is an ACAC adapter on analog input 0
-vrms = calc_rms(0,1780) * 0.87;      //ADC 0   double vrms = calc_rms(0,1780) * (Vcal * (3.3/1024) );
+vrms = calc_rms(0,1780) * 0.25;      //ADC 0   double vrms = calc_rms(0,1780) * (Vcal * (3.3/1024) );
 if (vrms>90) ACAC = 1; else ACAC=0;
 //Serial.print(vrms);
 }
