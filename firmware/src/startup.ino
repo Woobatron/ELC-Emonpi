@@ -35,7 +35,9 @@ void emonPi_startup()
 void CT_Detect(){
 //--------------------------------------------------Check for connected CT sensors---------------------------------------------------------------------------------------------------------
 if (analogRead(CT1_pin) > 0) {CT1 = 1; CT_count++;} else CT1=0;              // check to see if CT is connected to CT1 input, if so enable that channel
-if (analogRead(CT1_pin) > 0) {CT2 = 1; CT_count++;} else CT2=0;              // check to see if CT is connected to CT2 input, if so enable that channel
+if (analogRead(CT2_pin) > 0) {CT2 = 1; CT_count++;} else CT2=0;              // check to see if CT is connected to CT2 input, if so enable that channel
+if (analogRead(CT3_pin) > 0) {CT3 = 1; CT_count++;} else CT3=0;              // check to see if CT is connected to CT3 input, if so enable that channel
+if (analogRead(CT4_pin) > 0) {CT4 = 1; CT_count++;} else CT4=0;              // check to see if CT is connected to CT4 input, if so enable that channel
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //--------------------------------------------------Check for connected AC Adapter Sensor------------------------------------------------------------------------------------------------
@@ -52,7 +54,7 @@ pinMode(A0,INPUT);
 delay(500);             //allow things to settle
 
 // Calculate if there is an ACAC adapter on analog input 0
-vrms = calc_rms(0,1780) * 0.25;      //ADC 0   double vrms = calc_rms(0,1780) * (Vcal * (3.3/1024) );
+vrms = calc_rms(0,1780) * 0.5;      //ADC 0   double vrms = calc_rms(0,1780) * (Vcal * (3.3/1024) );
 if (vrms>90) ACAC = 1; else ACAC=0;
 //Serial.print(vrms);
 }
