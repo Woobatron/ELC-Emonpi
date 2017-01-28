@@ -93,7 +93,7 @@ const float Ical2 =                89.5;
 const float Ical3 =                89.5;
 const float Ical4 =                89.5;
 float Vcal_EU =                    256.8;                            // (230V x 13) / (9V x 1.2) = 276.9 - Calibration for EU AC-AC adapter 77DE-06-09
-const float Vcal_USA =             75.95;                            // Calibration for US AC-AC adapter 77DA-10-09
+const float Vcal_USA =             131.7;                            // Calibration for US AC-AC adapter 77DA-10-09
 boolean USA =                      TRUE;
 const byte min_pulsewidth = 110;                             // minimum width of interrupt pulse (default pulse output meters = 100ms)
 
