@@ -33,6 +33,8 @@ void serial_print_startup(int current_lcd_i2c_addr){
 
   Serial.print(F("CT 1 Cal: ")); Serial.println(Ical1);
   Serial.print(F("CT 2 Cal: ")); Serial.println(Ical2);
+  Serial.print(F("CT 3 Cal: ")); Serial.println(Ical3);
+  Serial.print(F("CT 4 Cal: ")); Serial.println(Ical4);
   Serial.print(F("VRMS AC ~"));
   Serial.print(vrms); Serial.println(F("V"));
 
@@ -53,7 +55,7 @@ void serial_print_startup(int current_lcd_i2c_addr){
    Serial.print(F("Assuming VRMS: ")); Serial.print(Vrms); Serial.println(F("V"));
  }
 
-lcd.setCursor(0, 1); lcd.print(F("Detected "));
+lcd.setCursor(0, 1); lcd.print(F("CT: "));
 
   if (CT_count==0) {
     Serial.println(F("no CT detected"));
@@ -68,7 +70,15 @@ lcd.setCursor(0, 1); lcd.print(F("Detected "));
     }
      if (CT2) {
       Serial.println(F("CT 2 detect"));
-      lcd.print(F("CT2"));
+      lcd.print(F("CT2 "));
+    }
+    if (CT3) {
+      Serial.println(F("CT 3 detect"));
+      lcd.print(F("CT3 "));
+    }
+    if (CT4) {
+      Serial.println(F("CT 4 detect"));
+      lcd.print(F("CT4 "));
     }
    }
 
@@ -83,9 +93,9 @@ lcd.setCursor(0, 1); lcd.print(F("Detected "));
     lcd.setCursor(0, 1); lcd.print(F("DS18B20 Temp"));
   }
   else {
-  	Serial.println(F("0 DS18B20 detected"));
-  	lcd.clear();
-  	lcd.print(F("Detected: ")); lcd.print(numSensors);
+    Serial.println(F("0 DS18B20 detected"));
+    lcd.clear();
+    lcd.print(F("Detected: ")); lcd.print(numSensors);
     lcd.setCursor(0, 1); lcd.print(F("DS18B20 Temp"));
   }
 
